@@ -64,7 +64,7 @@ impl I2CRegAcc for TWIM2_S
         let pdata = &mut data;
         let pdata = pdata as *mut u8;
         let pdata = pdata as u32;
-    
+
         self.shorts.write(|w| w
             .lasttx_startrx().enabled()
             .lastrx_stop().enabled()
@@ -91,6 +91,8 @@ impl I2CRegAcc for TWIM2_S
             .ptr().bits(pdata)
         } );
     
+        cortex_m::asm::dmb();
+    
         self.tasks_starttx.write(|w| w
             .tasks_starttx().trigger()
         );
@@ -113,6 +115,8 @@ impl I2CRegAcc for TWIM2_S
         self.events_stopped.write(|w| w
             .events_stopped().clear_bit()
         );
+    
+        cortex_m::asm::dmb();
     
         unsafe {
             (pdata as *const u8).read()
@@ -142,6 +146,8 @@ impl I2CRegAcc for TWIM2_S
         self.txd.ptr.write(|w| unsafe { w
             .ptr().bits(ptr)
         } );
+    
+        cortex_m::asm::dmb();
     
         self.tasks_starttx.write(|w| w
             .tasks_starttx().trigger()
