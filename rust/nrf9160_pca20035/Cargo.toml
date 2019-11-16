@@ -8,6 +8,4 @@ edition = "2018"
 
 [dependencies]
 cortex-m = "0.6.1"
-
-[dependencies.nrf91]
-version = "0.1.1"
+nrf91 = "0.1.1"
